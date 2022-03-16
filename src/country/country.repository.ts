@@ -44,10 +44,10 @@ export class CountryRepository extends Repository<Country> {
             slug: country_name.split(" ").join("-")
           })
           .execute()
-          .then(() => `${country_name} created successfully`)
-          .catch(() => {
-            'error in creating new task';
-          });
+          // .then((res)=>res)
+          // .catch(() => {
+          //   'error in creating new task';
+          // });
       } else return { msg: 'country already exists' };
     } catch (error) {
       throw new Error("'error in creating new country'");

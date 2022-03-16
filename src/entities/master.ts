@@ -10,8 +10,8 @@ import {
 
 @Entity()
 export class Master {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
   @Column({
     unique:true,
     nullable:false

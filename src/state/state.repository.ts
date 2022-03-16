@@ -1,11 +1,10 @@
-import { Country } from 'src/entities/country.entity';
 import { State } from 'src/entities/state.entity';
 import { IsActive } from 'src/service/isactive';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateStateDto } from './dto/createstate.dto';
 @EntityRepository(State)
 export class StateRepository extends Repository<State> {
-  async findAllState() {
+  async findAllState(): Promise<{}> {
     try {
       return await this.createQueryBuilder()
         .orderBy('state_name', 'ASC')
@@ -14,14 +13,18 @@ export class StateRepository extends Repository<State> {
       throw new Error('error in finding all states');
     }
   }
-  async findState(id: string) {
+  async findState(id: string): Promise<any> {
     try {
-      return this.createQueryBuilder().where({ id }).getOne();
+      const foundState = await this.createQueryBuilder().where({ id }).getOne();
+      if (!foundState) {
+        return { mes: 'state not found' };
+      }
+      return foundState;
     } catch (error) {
       throw new Error('error while getting state by id');
     }
   }
-  async createState(stateDto: CreateStateDto) {
+  async createState(stateDto: CreateStateDto): Promise<any> {
     try {
       const { state_name } = stateDto;
       const state = await this.createQueryBuilder()
@@ -39,9 +42,9 @@ export class StateRepository extends Repository<State> {
       throw new Error('error while creating new state');
     }
   }
-  updateStateStatus(id: string, status: IsActive) {
+  async updateStateStatus(id: string, status: IsActive): Promise<any> {
     try {
-      return this.createQueryBuilder()
+      return await this.createQueryBuilder()
         .where({ id })
         .update(State)
         .set({ isActive: status })

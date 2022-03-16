@@ -5,7 +5,7 @@ import { CreateCountryDto } from './dto/createcountry.dto';
 @EntityRepository(Country)
 export class CountryRepository extends Repository<Country> {
   // getting all coutries
-  async findAllCountry() {
+  async findAllCountry(): Promise<any> {
     try {
       return await this.createQueryBuilder()
         .orderBy('country_name', 'ASC')
@@ -15,7 +15,7 @@ export class CountryRepository extends Repository<Country> {
     }
   }
   //getting countries by id
-  async findCountry(id: string) {
+  async findCountry(id: string): Promise<any> {
     try {
       const foundCountry = await this.createQueryBuilder()
         .where({ id })
@@ -29,7 +29,7 @@ export class CountryRepository extends Repository<Country> {
     }
   }
   // creating new country
-  async createCountry(countryDto: CreateCountryDto) {
+  async createCountry(countryDto: CreateCountryDto): Promise<any> {
     try {
       const { country_name } = countryDto;
       const country = await this.createQueryBuilder()
@@ -54,7 +54,7 @@ export class CountryRepository extends Repository<Country> {
     }
   }
   // updating status of country
-  async changeCountryStatus(id: string, status: IsActive) {
+  async changeCountryStatus(id: string, status: IsActive): Promise<any> {
     try {
       const report = await this.createQueryBuilder()
         .where({ id })

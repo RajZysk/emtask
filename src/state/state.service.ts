@@ -13,13 +13,13 @@ export class StateService {
   findAllState() {
     return this.satateRepository.findAllState();
   }
-  findState(id: string) {
-    return this.satateRepository.findState(id);
+  findState(slug: string) {
+    return this.satateRepository.findState(slug);
   }
   createState(stateDto: CreateStateDto) {
     return this.satateRepository.createState(stateDto);
   }
-  updateStateStatus(id: string, status: IsActive) {
-    return this.satateRepository.updateStateStatus(id, status);
+  updateStateStatus(slug: string, status: IsActive) {
+    return this.satateRepository.updateStateStatus(slug, status);
   }
 }

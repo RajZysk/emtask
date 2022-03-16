@@ -15,15 +15,15 @@ export class CountryService {
     return this.countryRepository.findAllCountry();
   }
   //getting countries by id
-  findCountry(id: string) {
-    return this.countryRepository.findCountry(id);
+  findCountry(slug: string) {
+    return this.countryRepository.findCountry(slug);
   }
   // creating new country
   createCountry(countryDto: CreateCountryDto) {
     return this.countryRepository.createCountry(countryDto);
   }
   // updating status of country
-  changeCountryStatus(id: string, status: IsActive) {
-    return this.countryRepository.changeCountryStatus(id, status);
+  changeCountryStatus(slug: string, status: IsActive) {
+    return this.countryRepository.changeCountryStatus(slug, status);
   }
 }

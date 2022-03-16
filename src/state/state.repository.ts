@@ -13,9 +13,9 @@ export class StateRepository extends Repository<State> {
       throw new Error('error in finding all states');
     }
   }
-  async findState(id: string): Promise<any> {
+  async findState(slug: string): Promise<any> {
     try {
-      const foundState = await this.createQueryBuilder().where({ id }).getOne();
+      const foundState = await this.createQueryBuilder().where({ slug }).getOne();
       if (!foundState) {
         return { mes: 'state not found' };
       }
@@ -34,7 +34,7 @@ export class StateRepository extends Repository<State> {
         return this.createQueryBuilder()
           .insert()
           .into(State)
-          .values({ state_name, isActive: IsActive.active })
+          .values({ state_name, isActive: IsActive.active, slug: state_name.split(" ").join("-") })
           .execute()
           .then(() => `${state_name} created successfully`);
       } else return { msg: 'state already exists' };
@@ -42,10 +42,10 @@ export class StateRepository extends Repository<State> {
       throw new Error('error while creating new state');
     }
   }
-  async updateStateStatus(id: string, status: IsActive): Promise<any> {
+  async updateStateStatus(slug: string, status: IsActive): Promise<any> {
     try {
       return await this.createQueryBuilder()
-        .where({ id })
+        .where({ slug })
         .update(State)
         .set({ isActive: status })
         .execute();

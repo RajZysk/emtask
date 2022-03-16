@@ -2,13 +2,13 @@ const _dirConfig = {
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'postgres',
-  password: 'raj123',
-  database: 'emtask',
-  entities: ['dist/entities/*.entity.js'],
-  migrations: ['dist/migration/*.js'],
+  username: 'zysk',
+  password: '1234',
+  database: 'zysk',
+  entities: ['dist/src/entities/*.entity.js'],
+  migrations: ['dist/migrations/*.js'],
   cli: {
-    migrationsDir: 'migration',
+    migrationsDir: 'migrations',
   },
 };
 module.exports = _dirConfig;

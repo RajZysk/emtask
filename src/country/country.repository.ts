@@ -8,17 +8,16 @@ export class CountryRepository extends Repository<Country> {
   async findAllCountry(): Promise<any> {
     try {
       return await this.createQueryBuilder()
-        .orderBy('country_name', 'ASC')
         .getMany();
     } catch (error) {
-      throw new Error("'error in getting all countries'");
+      console.log(error)
     }
   }
   //getting countries by id
-  async findCountry(id: string): Promise<any> {
+  async findCountry(slug: string): Promise<any> {
     try {
       const foundCountry = await this.createQueryBuilder()
-        .where({ id })
+        .where({ slug })
         .getOne();
       if (!foundCountry) {
         return { mes: 'country not found' };
@@ -42,6 +41,7 @@ export class CountryRepository extends Repository<Country> {
           .values({
             country_name,
             isActive: IsActive.active,
+            slug: country_name.split(" ").join("-")
           })
           .execute()
           .then(() => `${country_name} created successfully`)
@@ -54,10 +54,10 @@ export class CountryRepository extends Repository<Country> {
     }
   }
   // updating status of country
-  async changeCountryStatus(id: string, status: IsActive): Promise<any> {
+  async changeCountryStatus(slug: string, status: IsActive): Promise<any> {
     try {
       const report = await this.createQueryBuilder()
-        .where({ id })
+        .where({ slug })
         .update()
         .set({ isActive: status })
         .execute();

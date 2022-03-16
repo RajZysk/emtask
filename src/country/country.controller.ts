@@ -12,21 +12,21 @@ export class CountryController {
     return this.countryService.findAllCountry();
   }
   //getting countries by id
-  @Get('/:id')
-  findCountry(@Param('id') id: string) {
-    return this.countryService.findCountry(id);
+  @Get('/:slug')
+  findCountry(@Param('slug') slug: string) {
+    return this.countryService.findCountry(slug);
   }
   // creating new country
-  @Post()
+  @Post("/add")
   createCountry(@Body() countryDto: CreateCountryDto) {
     return this.countryService.createCountry(countryDto);
   }
   // updating status of country
-  @Patch('/:id')
+  @Patch('/:slug')
   changeCountryStatus(
-    @Param('id') id: string,
+    @Param('slug') slug: string,
     @Body('status') status: IsActive,
   ) {
-    return this.countryService.changeCountryStatus(id, status);
+    return this.countryService.changeCountryStatus(slug, status);
   }
 }

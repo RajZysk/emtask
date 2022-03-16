@@ -10,16 +10,16 @@ export class StateController {
   findAllState() {
     return this.stateService.findAllState();
   }
-  @Get('/:id')
-  findSate(@Param('id') id: string) {
-    return this.stateService.findState(id);
+  @Get('/:slug')
+  findSate(@Param('slug') slug: string) {
+    return this.stateService.findState(slug);
   }
   @Post()
   createState(@Body() stateDto: CreateStateDto) {
     return this.stateService.createState(stateDto);
   }
-  @Patch('/:id')
-  updateStateStatus(@Param('id') id: string, @Body('status') status: IsActive) {
-    return this.stateService.updateStateStatus(id, status);
+  @Patch('/:slug')
+  updateStateStatus(@Param('slug') slug: string, @Body('status') status: IsActive) {
+    return this.stateService.updateStateStatus(slug, status);
   }
 }

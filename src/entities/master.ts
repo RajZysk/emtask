@@ -12,12 +12,23 @@ import {
 export class Master {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+  @Column({
+    unique:true,
+    nullable:false
+  })
+  slug:string
   @Column()
   isActive: IsActive;
-  @CreateDateColumn()
+  @CreateDateColumn({
+    name: 'created', type: 'timestamptz', select: false
+  })
   createdAt: Date;
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    name: 'updated_at', type: 'timestamptz', select: false
+  })
   updatedAt: Date;
-  @DeleteDateColumn()
+  @DeleteDateColumn({
+    name: 'deleted_at', type: 'timestamptz', select: false 
+  })
   deletedAt: Date;
 }

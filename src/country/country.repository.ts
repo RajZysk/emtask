@@ -44,7 +44,6 @@ export class CountryRepository extends Repository<Country> {
             slug: country_name.split(" ").join("-")
           })
           .execute()
-          .then(() => `${country_name} created successfully`)
           .catch(() => {
             'error in creating new task';
           });

@@ -1,10 +1,11 @@
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from 'src/entities/student.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { v4 as uuid } from 'uuid';
 import { StudentTeacher } from 'src/entities/student_teacher.entity';
+import { Teacher } from 'src/entities/teacher.entity';
 @EntityRepository(Student)
 export class StudentRepository extends Repository<Student> {
   /**
@@ -53,14 +54,22 @@ export class StudentRepository extends Repository<Student> {
         })
         .execute()
         .then(async () => {
-          teachers.map((teacher) => {
+          teachers.map(async (teacher) => {
+            const student = await this.studentRepository
+              .createQueryBuilder('students')
+              .where('students.studentName=:name', { name: studentName })
+              .getOne();
+            const teacherid = await getRepository(Teacher)
+              .createQueryBuilder('teachers')
+              .where('teachers.teacherName=:name', { name: teacher })
+              .getOne();
             this.studentRepository
               .createQueryBuilder()
               .insert()
               .into(StudentTeacher)
               .values({
-                teacher: teacher as any,
-                student: studentName as any,
+                teacher: teacherid.id as any,
+                student: student.id as any,
               })
               .execute();
           });

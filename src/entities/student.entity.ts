@@ -13,7 +13,7 @@ export class Student extends master2 {
   })
   studentName: string;
   @Column()
-  DOB: Date;
+  DOB: string;
   @OneToMany(() => StudentTeacher, (std_teach) => std_teach.student)
   std_teach: StudentTeacher[];
 }

@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { master2 } from './master2';
 import { StudentTeacher } from './student_teacher.entity';
 @Entity({
-  name: 'Teachers',
+  name: 'teachers',
 })
 export class Teacher extends master2 {
   @PrimaryGeneratedColumn()

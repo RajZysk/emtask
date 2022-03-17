@@ -4,7 +4,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { CreateStateDto } from './dto/createstate.dto';
 @EntityRepository(State)
 export class StateRepository extends Repository<State> {
-  async findAllState(): Promise<{}> {
+  async findAllState(): Promise<any> {
     try {
       return await this.createQueryBuilder()
         .orderBy('state_name', 'ASC')
@@ -15,7 +15,9 @@ export class StateRepository extends Repository<State> {
   }
   async findState(slug: string): Promise<any> {
     try {
-      const foundState = await this.createQueryBuilder().where({ slug }).getOne();
+      const foundState = await this.createQueryBuilder()
+        .where({ slug })
+        .getOne();
       if (!foundState) {
         return { mes: 'state not found' };
       }
@@ -34,9 +36,13 @@ export class StateRepository extends Repository<State> {
         return this.createQueryBuilder()
           .insert()
           .into(State)
-          .values({ state_name, isActive: IsActive.active, slug: state_name.split(" ").join("-") })
+          .values({
+            state_name,
+            isActive: IsActive.active,
+            slug: state_name.split(' ').join('-'),
+          })
           .execute()
-          .then(() => `${state_name} created successfully`);
+          .then((res) => res);
       } else return { msg: 'state already exists' };
     } catch (error) {
       throw new Error('error while creating new state');

@@ -1,15 +1,12 @@
-import { IsActive } from 'src/service/isactive';
 import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
 
 @Entity()
-export class Master {
+export class master2 {
   @Column({
     unique: true,
     nullable: false,
   })
   slug: string;
-  @Column()
-  isActive: IsActive;
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',

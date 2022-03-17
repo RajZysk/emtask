@@ -19,7 +19,10 @@ export class StateController {
     return this.stateService.createState(stateDto);
   }
   @Patch('/:slug')
-  updateStateStatus(@Param('slug') slug: string, @Body('status') status: IsActive) {
+  updateStateStatus(
+    @Param('slug') slug: string,
+    @Body('status') status: IsActive,
+  ) {
     return this.stateService.updateStateStatus(slug, status);
   }
 }

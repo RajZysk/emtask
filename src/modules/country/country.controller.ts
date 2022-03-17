@@ -17,7 +17,7 @@ export class CountryController {
     return this.countryService.findCountry(slug);
   }
   // creating new country
-  @Post("/add")
+  @Post('/add')
   createCountry(@Body() countryDto: CreateCountryDto) {
     return this.countryService.createCountry(countryDto);
   }

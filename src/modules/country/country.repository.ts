@@ -7,10 +7,9 @@ export class CountryRepository extends Repository<Country> {
   // getting all coutries
   async findAllCountry(): Promise<any> {
     try {
-      return await this.createQueryBuilder()
-        .getMany();
+      return this.createQueryBuilder().getMany();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
   //getting countries by id
@@ -35,19 +34,18 @@ export class CountryRepository extends Repository<Country> {
         .where({ country_name })
         .getOne();
       if (!country) {
-        return await this.createQueryBuilder()
+        return this.createQueryBuilder()
           .insert()
           .into(Country)
           .values({
             country_name,
             isActive: IsActive.active,
-            slug: country_name.split(" ").join("-")
+            slug: country_name.split(' ').join('-'),
           })
           .execute()
-          // .then((res)=>res)
-          // .catch(() => {
-          //   'error in creating new task';
-          // });
+          .catch(() => {
+            'error in creating new task';
+          });
       } else return { msg: 'country already exists' };
     } catch (error) {
       throw new Error("'error in creating new country'");

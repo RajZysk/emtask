@@ -20,6 +20,6 @@ export class TeachersService {
     return this.teachersRepo.createTeacher(res);
   }
   updateTeacher(slug: string, res: UpdateTeacherDto) {
-    return this.teachersRepo.updateTeacher(res, slug);
+    return this.teachersRepo.updateTeacher(slug, res);
   }
 }

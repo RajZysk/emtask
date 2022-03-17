@@ -4,6 +4,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { v4 as uuid } from 'uuid';
+import { StudentTeacher } from 'src/entities/student_teacher.entity';
 @EntityRepository(Student)
 export class StudentRepository extends Repository<Student> {
   /**
@@ -39,7 +40,7 @@ export class StudentRepository extends Repository<Student> {
     }
   }
   async creatingStudent(res: CreateStudentDto) {
-    const { studentName, DOB } = res;
+    const { studentName, DOB, teachers } = res;
     try {
       return this.studentRepository
         .createQueryBuilder()
@@ -50,7 +51,21 @@ export class StudentRepository extends Repository<Student> {
           DOB,
           slug: uuid(),
         })
-        .execute();
+        .execute()
+        .then(async () => {
+          teachers.map((teacher) => {
+            this.studentRepository
+              .createQueryBuilder()
+              .insert()
+              .into(StudentTeacher)
+              .values({
+                teacher: teacher as any,
+                student: studentName as any,
+              })
+              .execute();
+          });
+        })
+        .then(() => 'successfully created');
     } catch (error) {
       console.log(error);
     }

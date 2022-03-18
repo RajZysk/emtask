@@ -7,8 +7,8 @@ import { StudentsService } from './students.service';
 export class StudentsController {
   constructor(private studentService: StudentsService) {}
   @Get()
-  findAllStudents() {
-    return this.studentService.findAllStudents();
+  findAllStudents(@Param() search: any) {
+    return this.studentService.findAllStudents(search);
   }
   @Get('/:slug')
   findStudent(@Param('slug') slug: string) {

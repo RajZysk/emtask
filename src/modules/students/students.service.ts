@@ -10,8 +10,8 @@ export class StudentsService {
     @InjectRepository(StudentRepository)
     private studentRepository: StudentRepository,
   ) {}
-  findAllStudents() {
-    return this.studentRepository.findAllStudents();
+  findAllStudents(search: any) {
+    return this.studentRepository.findAllStudents(search);
   }
   findStudent(slug: string) {
     return this.studentRepository.findStudent(slug);

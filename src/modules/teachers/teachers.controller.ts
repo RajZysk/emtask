@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { TeachersService } from './teachers.service';
@@ -7,8 +15,8 @@ import { TeachersService } from './teachers.service';
 export class TeachersController {
   constructor(private teacherService: TeachersService) {}
   @Get()
-  fetchAllTeachers() {
-    return this.teacherService.fetchAllTeachers();
+  fetchAllTeachers(@Query() search: any) {
+    return this.teacherService.fetchAllTeachers(search);
   }
   @Get('/:slug')
   fetchTeacher(@Param('slug') slug: string) {

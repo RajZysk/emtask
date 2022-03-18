@@ -15,9 +15,27 @@ export class TeachersRepository extends Repository<Teacher> {
   ) {
     super();
   }
-  fetchAllTeachers() {
+  async fetchAllTeachers(search) {
     try {
-      return this.teachersRepository.createQueryBuilder().getMany();
+      const { studentname } = search;
+      const query = this.teachersRepository.createQueryBuilder('teachers');
+      if (studentname) {
+        const student = await getRepository(Student)
+          .createQueryBuilder('students')
+          .where('students.studentName=:studentname', { studentname })
+          .getOne();
+        console.log(student);
+        const realtion = await getRepository(StudentTeacher)
+          .createQueryBuilder('stu_tech')
+          .where('stu_tech.student=:studentid', { studentid: student.id })
+          .execute();
+        const result = await query
+          .where('teachers.id=:resid', {
+            resid: realtion[0].stu_tech_teacher_id,
+          })
+          .getOne();
+        return result;
+      } else return query.getMany();
     } catch (error) {
       console.log(error);
     }

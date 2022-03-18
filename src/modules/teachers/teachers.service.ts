@@ -10,8 +10,8 @@ export class TeachersService {
     @InjectRepository(TeachersRepository)
     private teachersRepo: TeachersRepository,
   ) {}
-  fetchAllTeachers() {
-    return this.teachersRepo.fetchAllTeachers();
+  fetchAllTeachers(search: any) {
+    return this.teachersRepo.fetchAllTeachers(search);
   }
   fetchTeacher(slug: string) {
     return this.teachersRepo.fetchTeacher(slug);

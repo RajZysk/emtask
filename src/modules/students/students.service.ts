@@ -1,15 +1,11 @@
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { StudentRepository as StudentRepository } from './students.repository';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 
 @Injectable()
 export class StudentsService {
-  constructor(
-    @InjectRepository(StudentRepository)
-    private studentRepository: StudentRepository,
-  ) {}
+  constructor(protected studentRepository: StudentRepository) {}
   findAllStudents(search: any) {
     return this.studentRepository.findAllStudents(search);
   }

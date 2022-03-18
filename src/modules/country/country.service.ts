@@ -11,8 +11,8 @@ export class CountryService {
     private countryRepository: CountryRepository,
   ) {}
   // getting all coutries
-  findAllCountry() {
-    return this.countryRepository.findAllCountry();
+  findAllCountry(search: any) {
+    return this.countryRepository.findAllCountry(search);
   }
   //getting countries by id
   findCountry(slug: string) {

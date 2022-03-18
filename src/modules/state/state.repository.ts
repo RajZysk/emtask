@@ -3,13 +3,25 @@ import { State } from 'src/entities/state.entity';
 import { IsActive } from 'src/service/isactive';
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import { CreateStateDto } from './dto/createstate.dto';
+import { v4 as uuid } from 'uuid';
 @EntityRepository(State)
 export class StateRepository extends Repository<State> {
-  async findAllState(): Promise<any> {
+  async findAllState(search): Promise<any> {
     try {
-      return await this.createQueryBuilder()
-        .orderBy('state_name', 'ASC')
-        .getMany();
+      const { countryName } = search;
+      const query = this.createQueryBuilder('state');
+      if (countryName) {
+        const country = await getRepository(Country)
+          .createQueryBuilder('countries')
+          .where('countries.country_name=:countryName', { countryName })
+          .getOne();
+        const relation = await query
+          .where('state.country=:countryid', {
+            countryid: country.id,
+          })
+          .execute();
+        return relation;
+      } else return query.getMany();
     } catch (error) {
       throw new Error('error in finding all states');
     }
@@ -46,7 +58,7 @@ export class StateRepository extends Repository<State> {
           .values({
             state_name,
             isActive: IsActive.active,
-            slug: state_name.split(' ').join('-'),
+            slug: uuid(),
             country: countryid.id as any,
           })
           .execute();

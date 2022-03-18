@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { IsActive } from 'src/service/isactive';
 import { CreateStateDto } from './dto/createstate.dto';
 import { StateService } from './state.service';
@@ -7,8 +15,8 @@ import { StateService } from './state.service';
 export class StateController {
   constructor(private stateService: StateService) {}
   @Get()
-  findAllState() {
-    return this.stateService.findAllState();
+  findAllState(@Query() search: any) {
+    return this.stateService.findAllState(search);
   }
   @Get('/:slug')
   findSate(@Param('slug') slug: string) {

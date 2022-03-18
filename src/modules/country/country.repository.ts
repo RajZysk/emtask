@@ -1,13 +1,23 @@
 import { Country } from 'src/entities/country.entity';
+import { State } from 'src/entities/state.entity';
 import { IsActive } from 'src/service/isactive';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, getRepository } from 'typeorm';
 import { CreateCountryDto } from './dto/createcountry.dto';
 @EntityRepository(Country)
 export class CountryRepository extends Repository<Country> {
   // getting all coutries
-  async findAllCountry(): Promise<any> {
+  async findAllCountry(search: any): Promise<any> {
     try {
-      return this.createQueryBuilder().getMany();
+      const { stateName } = search;
+      if (stateName) {
+        const state = await getRepository(State)
+          .createQueryBuilder('state')
+          .select()
+          .addSelect('state.country')
+          .where('state.state_name=:stateName', { stateName })
+          .getOne();
+        console.log(state);
+      }
     } catch (error) {
       console.log(error);
     }

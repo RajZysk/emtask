@@ -1,25 +1,20 @@
+import { Injectable } from '@nestjs/common';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from 'src/entities/student.entity';
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { v4 as uuid } from 'uuid';
 import { StudentTeacher } from 'src/entities/student_teacher.entity';
 import { Teacher } from 'src/entities/teacher.entity';
-@EntityRepository(Student)
-export class StudentRepository extends Repository<Student> {
-  /**
-   * Constructor: StudentRepository
-   * @param StudentRepository Branch repository
-   */
+@Injectable()
+export class StudentRepository {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
-  ) {
-    super();
-  }
+  ) {}
 
-  async findAllStudents(search: any) {
+  async findAllStudents(search: any): Promise<any> {
     try {
       const { teacherName } = search;
       const query = this.studentRepository.createQueryBuilder('students');
@@ -44,9 +39,9 @@ export class StudentRepository extends Repository<Student> {
       console.log(error);
     }
   }
-  findStudent(slug: string) {
+  async findStudent(slug: string): Promise<any> {
     try {
-      const student = this.studentRepository
+      const student = await this.studentRepository
         .createQueryBuilder()
         .where({ slug })
         .getOne();
@@ -58,7 +53,7 @@ export class StudentRepository extends Repository<Student> {
       return { mes: 'error in getting student by slug' };
     }
   }
-  async creatingStudent(res: CreateStudentDto) {
+  async creatingStudent(res: CreateStudentDto): Promise<any> {
     const { studentName, DOB, teachers } = res;
     try {
       return this.studentRepository
@@ -97,7 +92,7 @@ export class StudentRepository extends Repository<Student> {
       console.log(error);
     }
   }
-  async updateStudent(slug: string, res: UpdateStudentDto) {
+  async updateStudent(slug: string, res: UpdateStudentDto): Promise<any> {
     try {
       const { studentName, DOB } = res;
       const student = await this.findStudent(slug);

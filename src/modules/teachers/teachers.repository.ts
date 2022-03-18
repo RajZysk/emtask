@@ -1,21 +1,20 @@
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from 'src/entities/teacher.entity';
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { v4 as uuid } from 'uuid';
 import { StudentTeacher } from 'src/entities/student_teacher.entity';
 import { Student } from 'src/entities/student.entity';
 
-@EntityRepository(Teacher)
-export class TeachersRepository extends Repository<Teacher> {
+@Injectable()
+export class TeachersRepository {
   constructor(
     @InjectRepository(Teacher)
     private readonly teachersRepository: Repository<Teacher>,
-  ) {
-    super();
-  }
-  async fetchAllTeachers(search) {
+  ) {}
+  async fetchAllTeachers(search: any): Promise<any> {
     try {
       const { studentname } = search;
       const query = this.teachersRepository.createQueryBuilder('teachers');
@@ -40,9 +39,9 @@ export class TeachersRepository extends Repository<Teacher> {
       console.log(error);
     }
   }
-  fetchTeacher(slug: string) {
+  async fetchTeacher(slug: string): Promise<any> {
     try {
-      const teacher = this.teachersRepository
+      const teacher = await this.teachersRepository
         .createQueryBuilder()
         .where({ slug })
         .getOne();
@@ -54,7 +53,7 @@ export class TeachersRepository extends Repository<Teacher> {
       return { mes: 'error in getting teacher by slug' };
     }
   }
-  async createTeacher(res: CreateTeacherDto) {
+  async createTeacher(res: CreateTeacherDto): Promise<any> {
     const { teacherName, students } = res;
     try {
       return this.teachersRepository
@@ -93,7 +92,7 @@ export class TeachersRepository extends Repository<Teacher> {
       console.log(error);
     }
   }
-  async updateTeacher(slug: string, res: UpdateTeacherDto) {
+  async updateTeacher(slug: string, res: UpdateTeacherDto): Promise<any> {
     try {
       const { teacherName } = res;
       const student = await this.fetchTeacher(slug);

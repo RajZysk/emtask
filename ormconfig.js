@@ -5,6 +5,7 @@ const _dirConfig = {
   username: 'zysk',
   password: '1234',
   database: 'zysk',
+  logging: true,
   entities: ['dist/src/entities/*.entity.js'],
   migrations: ['dist/migrations/*.js'],
   cli: {

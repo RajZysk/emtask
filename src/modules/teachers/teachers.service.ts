@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { TeachersRepository } from './teachers.repository';
 
 @Injectable()
 export class TeachersService {
-  constructor(
-    @InjectRepository(TeachersRepository)
-    private teachersRepo: TeachersRepository,
-  ) {}
+  constructor(protected teachersRepo: TeachersRepository) {}
   fetchAllTeachers(search: any) {
     return this.teachersRepo.fetchAllTeachers(search);
   }

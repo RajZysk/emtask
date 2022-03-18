@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { IsActive } from 'src/service/isactive';
 import { CountryService } from './country.service';
 import { CreateCountryDto } from './dto/createcountry.dto';
@@ -8,8 +16,8 @@ export class CountryController {
   constructor(private countryService: CountryService) {}
   // getting all coutries
   @Get()
-  findAllCountry() {
-    return this.countryService.findAllCountry();
+  findAllCountry(@Query() search: any) {
+    return this.countryService.findAllCountry(search);
   }
   //getting countries by id
   @Get('/:slug')

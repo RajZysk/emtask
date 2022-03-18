@@ -10,8 +10,8 @@ export class StateService {
     @InjectRepository(StateRepository)
     private satateRepository: StateRepository,
   ) {}
-  findAllState() {
-    return this.satateRepository.findAllState();
+  findAllState(search: any) {
+    return this.satateRepository.findAllState(search);
   }
   findState(slug: string) {
     return this.satateRepository.findState(slug);

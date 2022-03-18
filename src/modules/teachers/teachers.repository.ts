@@ -1,4 +1,3 @@
-import { StudentRepository } from './../students/students.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from 'src/entities/teacher.entity';
 import { EntityRepository, getRepository, Repository } from 'typeorm';

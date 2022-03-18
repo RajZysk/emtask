@@ -1,7 +1,6 @@
 import { Country } from 'src/entities/country.entity';
-import { State } from 'src/entities/state.entity';
 import { IsActive } from 'src/service/isactive';
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { CreateCountryDto } from './dto/createcountry.dto';
 @EntityRepository(Country)
 export class CountryRepository extends Repository<Country> {
@@ -30,7 +29,7 @@ export class CountryRepository extends Repository<Country> {
   // creating new country
   async createCountry(countryDto: CreateCountryDto): Promise<any> {
     try {
-      const { country_name, states } = countryDto;
+      const { country_name } = countryDto;
       const country = await this.createQueryBuilder()
         .where({ country_name })
         .getOne();
@@ -44,15 +43,6 @@ export class CountryRepository extends Repository<Country> {
             slug: country_name.split(' ').join('-'),
           })
           .execute()
-          .then(() => {
-            states.map(async (state) => {
-              const stateid = await getRepository(State)
-                .createQueryBuilder('states')
-                .where('states.state_name=:state', { state })
-                .getOne();
-              console.log(stateid);
-            });
-          })
           .catch(() => {
             'error in creating new task';
           });

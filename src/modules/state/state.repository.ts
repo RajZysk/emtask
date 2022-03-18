@@ -1,6 +1,7 @@
+import { Country } from 'src/entities/country.entity';
 import { State } from 'src/entities/state.entity';
 import { IsActive } from 'src/service/isactive';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
 import { CreateStateDto } from './dto/createstate.dto';
 @EntityRepository(State)
 export class StateRepository extends Repository<State> {
@@ -28,11 +29,17 @@ export class StateRepository extends Repository<State> {
   }
   async createState(stateDto: CreateStateDto): Promise<any> {
     try {
-      const { state_name } = stateDto;
+      const { state_name, country } = stateDto;
       const state = await this.createQueryBuilder()
         .where({ state_name })
         .getOne();
       if (!state) {
+        const countryid = await getRepository(Country)
+          .createQueryBuilder('countries')
+          .where('countries.country_name=:countryname', {
+            countryname: country,
+          })
+          .getOne();
         return this.createQueryBuilder()
           .insert()
           .into(State)
@@ -40,9 +47,9 @@ export class StateRepository extends Repository<State> {
             state_name,
             isActive: IsActive.active,
             slug: state_name.split(' ').join('-'),
+            country: countryid.id as any,
           })
-          .execute()
-          .then((res) => res);
+          .execute();
       } else return { msg: 'state already exists' };
     } catch (error) {
       throw new Error('error while creating new state');
@@ -56,7 +63,7 @@ export class StateRepository extends Repository<State> {
         .set({ isActive: status })
         .execute();
     } catch (error) {
-      throw new Error('error in chaning the state status');
+      throw new Error('error in changing the state status');
     }
   }
 }
